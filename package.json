@@ -1,0 +1,26 @@
+{
+  "name": "angularjs-socketio",
+  "version": "0.0.1",
+  "description": "AngularJS et Socket.IO en pratique",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xajkep/tweb-angularjs-socketio.git"
+  },
+  "keywords": [
+    "tweb",
+    "angular",
+    "js",
+    "node",
+    "heig",
+    "socket"
+  ],
+  "author": "Benoît Zuckschwerdt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xajkep/tweb-angularjs-socketio/issues"
+  }
+}

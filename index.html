@@ -1,0 +1,50 @@
+<html>
+<head>
+  <title>AngularJS</title>
+  <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+</head>
+<body onload="main()">
+  <button onclick="send('yes')">yes</button>
+  <button onclick="send('no')">no</button>
+  <button onclick="send('maybe')">maybe</button>
+
+  <canvas id="chart" width="400" height="400"></canvas>
+
+  <script>
+  var poll;
+  var chartData = {
+    labels: ["yes", "no", "maybe"],
+    datasets: [
+      {
+        data: [0,0,0]
+      }
+    ]
+  };
+
+  var ctx = document.getElementById("chart").getContext("2d");
+  var myBarChart = new Chart(ctx).Bar(chartData, {});
+
+  function main() {
+    var socket = io.connect('http://localhost:1337');
+    socket.emit('poll-request');
+
+    socket.on('poll', function (data) {
+      console.log(data);
+      poll = data;
+
+      chartData.datasets[0].data = [1,2,3];
+    });
+
+
+  }
+
+  function send(s) {
+    var socket = io.connect('http://localhost:1337');
+
+    socket.emit('send', s);
+  }
+
+  </script>
+</body>
+</html>
