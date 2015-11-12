@@ -1,23 +1,24 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-var poll = {
-  "yes": 0,
-  "no": 0,
-  "maybe": 0
-}
+var poll = [0,0,0];
+
+var bonjour="HELLO";
 
 server.listen(1337);
+
+app.use(express.static('public'));
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', function (socket) {
-  socket.on('send', function (data) {
-    poll[data]++;
-    console.log(data + " " + poll[data]);
+  socket.on('send', function (i) {
+    poll[i]++;
+    console.log(i + " " + poll[i]);
 
     socket.emit('poll', poll);
   });
@@ -26,10 +27,3 @@ io.on('connection', function (socket) {
     socket.emit('poll', poll);
   });
 });
-
-/*io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
-});*/
