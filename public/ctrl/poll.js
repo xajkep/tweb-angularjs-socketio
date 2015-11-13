@@ -12,19 +12,62 @@
  */
 var pollApp = angular.module('pollApp', ['chart.js']);
 
+var socket = io.connect('http://localhost:1337');
+
 pollApp.controller('pollCtrl', function($scope) {
+  $scope.chartLabels = [];
+  $scope.chartData = [];
 
-  $scope.chartLabels = ["yes", "no", "maybe"]
-
-  var socket = io.connect('http://localhost:1337');
+  /**
+   * Envoie une réponse
+   * @param index de la réponse
+   */
+  $scope.send = function(s) {
+    socket.emit('send', s);
+  };
 
   // Receptionne les données du sondage
   // et met a jour le graphique.
-  socket.on('poll', function (data) {
-    console.log(data); //debug
+  socket.on('poll', function (poll) {
+    console.log(poll); //debug
 
-    $scope.$apply(function () {
-      $scope.chartData = data;
+    $scope.$apply(function() {
+      $scope.chartLabels = [];
+      $scope.chartData = [];
+      setLabels($scope.chartLabels,poll);
+      setData($scope.chartData, poll);
     });
+
+
   });
 });
+
+/**
+ * Extrait le tableau des labels
+ * @param el, poll
+ */
+function setLabels(el, poll) {
+
+  for (var i = 0; i < Object.keys(poll).length; i++) {
+    el.push(poll[i].name);
+  }
+
+}
+
+/**
+ * Extrait le tableau des compteurs
+ * @param poll
+ */
+function setData(el, poll) {
+  for (var i = 0; i < Object.keys(poll).length; i++) {
+    el.push(poll[i].count);
+  }
+
+}
+
+/**
+ * Fonction d'initialisation
+ */
+function init() {
+  socket.emit('poll-request');
+}

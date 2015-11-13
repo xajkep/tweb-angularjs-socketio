@@ -14,12 +14,12 @@
   <!-- Feuille de style pour les graphiques -->
   <link rel="stylesheet" href="/css/angular-chart.min.css">
 </head>
-<body ng-controller="pollCtrl" onload="main()">
+<body ng-controller="pollCtrl" onload="init()">
 
   <!-- Boutons de réponse -->
-  <button onclick="send(0)">yes</button>
-  <button onclick="send(1)">no</button>
-  <button onclick="send(2)">maybe</button>
+  <div ng-repeat="label in chartLabels track by $index">
+    <button ng-click="send($index)">{{ label }}</button>{{$index}}
+  </div>
 
   <!-- Graphique -->
   <div ng-if="chartData">
@@ -29,25 +29,5 @@
       chart-legend="true"></canvas>
   </div>
 
-  <script>
-
-    /**
-     * Fonction d'initialisation
-     */
-    function main() {
-      var socket = io.connect('http://localhost:1337');
-      socket.emit('poll-request');
-    }
-
-    /**
-     * Envoie une réponse
-     * @param index de la réponse
-     */
-    function send(s) {
-      var socket = io.connect('http://localhost:1337');
-      socket.emit('send', s);
-    }
-
-  </script>
 </body>
 </html>
