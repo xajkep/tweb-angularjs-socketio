@@ -1,5 +1,5 @@
 /**
- * TWEB - AngularJS et Socket.io en pratique
+ * TWEB - AngularJS et pollSocket.io en pratique
  *
  * @author  Benoît Zuckschwerdt
  * @date    2015-11-12
@@ -10,11 +10,15 @@
  *  + Initialisation des labels du graphique
  *  + Met à jours le graphique
  */
-var pollApp = angular.module('pollApp', ['chart.js']);
+var pollApp = angular.module('pollApp', ['chart.js', 'btford.socket-io']);
 
-var socket = io.connect();
+//var socket = io.connect();
 
-pollApp.controller('pollCtrl', function($scope) {
+pollApp.factory('pollSocket', function (socketFactory) {
+  return socketFactory();
+});
+
+pollApp.controller('pollCtrl', function($scope, pollSocket) {
   $scope.chartLabels = [];
   $scope.chartData = [];
 
@@ -23,12 +27,26 @@ pollApp.controller('pollCtrl', function($scope) {
    * @param index de la réponse
    */
   $scope.send = function(s) {
-    socket.emit('send', s);
+    pollSocket.emit('send', s);
+  };
+
+  /**
+   * Fonction d'initialisation
+   */
+  $scope.init = function() {
+    pollSocket.emit('poll-request');
+  };
+
+  /**
+   * Fonction de reset
+   */
+  $scope.reset = function() {
+    pollSocket.emit('reset');
   };
 
   // Receptionne les données du sondage
   // et met a jour le graphique.
-  socket.on('poll', function (poll) {
+  pollSocket.on('poll', function (poll) {
     console.log(poll); //debug
 
     $scope.$apply(function() {
@@ -62,19 +80,4 @@ function setData(el, poll) {
   for (var i = 0; i < Object.keys(poll).length; i++) {
     el.push(poll[i].count);
   }
-
-}
-
-/**
- * Fonction d'initialisation
- */
-function init() {
-  socket.emit('poll-request');
-}
-
-/**
- * Fonction de reset
- */
-function reset() {
-  socket.emit('reset');
 }

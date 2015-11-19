@@ -15,8 +15,6 @@ var PORT = process.env.PORT || 1337;
 
 var express = require('express');
 var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
 
 // Tableau contenant les réponses.
 var poll;
@@ -41,8 +39,11 @@ initPoll();
 
 
 // Met le serveur en écoute sur le port spécifié.
-server.listen(PORT);
-console.log("listen on 127.0.0.1:"+PORT);
+var server = app.listen(PORT, function() {
+  console.log("listen on port "+PORT);
+});
+
+var io = require('socket.io')(server);
 
 // Permet au code client d'utiliser les dossiers et fichiers
 // contenu dans le dossier public.
