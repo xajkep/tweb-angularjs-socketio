@@ -8,6 +8,7 @@
   <script src="/js/angular-chart.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/socket.min.js"></script>
+  <script src="/js/angular-ui-router.min.js"></script>
 
 
   <!-- Controlleur du sondage -->
@@ -15,24 +16,23 @@
 
   <!-- Feuille de style pour les graphiques -->
   <link rel="stylesheet" href="/css/angular-chart.min.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 <body ng-controller="pollCtrl" data-ng-init="init()">
 
-  <!-- Boutons de réponse -->
-  <div ng-repeat="label in chartLabels track by $index">
-    <button ng-click="send($index)">{{ label }}</button>
+<div class="container">
+  <h1>AngularJS et Socket.io en pratique !</h1>
+  <br/>
+  <div class="btn-group" role="group">
+    <a ui-sref="participate" type="button" class="btn btn-default">Participate</a>
+    <a ui-sref="results" type="button" class="btn btn-default">View results</a>
+    <a ui-sref="debug" type="button" class="btn btn-default">Debug</a>
   </div>
 
   <hr/>
-  <button ng-click="reset()">reset poll</button>
 
-  <!-- Graphique -->
-  <div ng-if="chartData">
-    <canvas id="chart" class="chart chart-doughnut"
-      chart-data="chartData"
-      chart-labels="chartLabels"
-      chart-legend="true"></canvas>
-  </div>
+  <div ui-view></div>
+</diV>
 
 </body>
 </html>
