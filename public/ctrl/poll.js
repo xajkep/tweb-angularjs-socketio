@@ -10,12 +10,32 @@
  *  + Initialisation des labels du graphique
  *  + Met à jours le graphique
  */
-var pollApp = angular.module('pollApp', ['chart.js', 'btford.socket-io']);
+var pollApp = angular.module('pollApp', ['chart.js', 'btford.socket-io', 'ui.router']);
 
 //var socket = io.connect();
 
 pollApp.factory('pollSocket', function (socketFactory) {
   return socketFactory();
+});
+
+pollApp.config(function($stateProvider, $urlRouterProvider) {
+  // For any unmatched url, redirect to /participate
+  $urlRouterProvider.otherwise("/participate");
+
+  // Now set up the states
+  $stateProvider
+    .state('participate', {
+      url: "/participate",
+      templateUrl: "views/participate.html"
+    })
+    .state('results', {
+      url: "/results",
+      templateUrl: "views/results.html"
+    })
+    .state('debug', {
+      url: "/debug",
+      templateUrl: "views/debug.html"
+    })
 });
 
 pollApp.controller('pollCtrl', function($scope, pollSocket) {
