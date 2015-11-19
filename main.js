@@ -19,20 +19,25 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 // Tableau contenant les réponses.
-var poll = [
-  {
-    "name": "yes",
-    "count": 0
-  },
-  {
-    "name": "no",
-    "count": 0
-  },
-  {
-    "name": "maybe",
-    "count": 0
-  },
-]
+var poll;
+function initPoll() {
+  poll = [
+    {
+      "name": "yes",
+      "count": 0
+    },
+    {
+      "name": "no",
+      "count": 0
+    },
+    {
+      "name": "maybe",
+      "count": 0
+    },
+  ]
+}
+
+initPoll();
 
 
 // Met le serveur en écoute sur le port spécifié.
@@ -64,6 +69,11 @@ io.on('connection', function (socket) {
   // Envoie les données du sondage.
   // (demandé côté client lors de l'initialisation)
   socket.on('poll-request', function (data) {
+    socket.emit('poll', poll);
+  });
+
+  socket.on('reset', function (d) {
+    initPoll();
     socket.emit('poll', poll);
   });
 });

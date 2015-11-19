@@ -18,8 +18,11 @@
 
   <!-- Boutons de réponse -->
   <div ng-repeat="label in chartLabels track by $index">
-    <button ng-click="send($index)">{{ label }}</button>{{$index}}
+    <button ng-click="send($index)">{{ label }}</button>
   </div>
+
+  <hr/>
+  <button onclick="reset()">reset poll</button>
 
   <!-- Graphique -->
   <div ng-if="chartData">

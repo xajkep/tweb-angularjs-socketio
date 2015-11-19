@@ -71,3 +71,10 @@ function setData(el, poll) {
 function init() {
   socket.emit('poll-request');
 }
+
+/**
+ * Fonction de reset
+ */
+function reset() {
+  socket.emit('reset');
+}
