@@ -11,15 +11,14 @@
  *  + Gestion la réception des réponses envoyés par les clients
  *  + Gestion de l'envoie des données du sondage axu clients
  */
-var PORT = 1337;
+var PORT = process.env.PORT || 1337;
 
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-// Tableau contenant les compteurs de réponses.
-//var poll = [0,0,0];
+// Tableau contenant les réponses.
 var poll = [
   {
     "name": "yes",

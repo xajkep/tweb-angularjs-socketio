@@ -12,7 +12,7 @@
  */
 var pollApp = angular.module('pollApp', ['chart.js']);
 
-var socket = io.connect('http://localhost:1337');
+var socket = io.connect();
 
 pollApp.controller('pollCtrl', function($scope) {
   $scope.chartLabels = [];
